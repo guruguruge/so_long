@@ -15,7 +15,7 @@
 
 void	hit_wall(t_core *so_long)
 {
-	display_map(so_long->map_info, so_long->mlx, so_long->win, so_long);
+	// display_map(so_long->map_info, so_long->mlx, so_long->win, so_long);
 	mlx_do_sync(so_long->mlx);
 }
 

@@ -19,7 +19,7 @@ int	render(void *so_long_void)
 	static size_t	frame = 0;
 
 	so_long = (t_core *)so_long_void;
-	if (++frame >= 9000)
+	if (++frame >= 100000)
 	{
 		enemy_movement(so_long);
 		frame = 0;
@@ -27,7 +27,7 @@ int	render(void *so_long_void)
 	if (so_long->attack_state)
 	{
 		draw_attack_effect(so_long);
-		if (++so_long->attack_frame >= 1000)
+		if (++so_long->attack_frame >= 100000)
 		{
 			so_long->attack_state = 0;
 			check_attack_hit(so_long);
@@ -51,7 +51,7 @@ int	handle_key_input(int key, void *so_long_void)
 		movement_right(key, so_long);
 	else if (key == ATTACK_U || key == ATTACK_D)
 		note_attack(key, so_long);
-	else if (key == ATTACK_U || key == ATTACK_D)
+	else if (key == ATTACK_L || key == ATTACK_R)
 		note_attack(key, so_long);
 	else if (key == ESC)
 		end_game(so_long);

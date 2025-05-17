@@ -135,7 +135,6 @@ typedef struct s_core
 # define S 115
 # define D 100
 # define ESC 65307
-
 # define ATTACK_U 65362
 # define ATTACK_L 65361
 # define ATTACK_D 65364
@@ -199,13 +198,17 @@ int				enemy_move_up(t_core *so_long);
 int				enemy_move_left(t_core *so_long);
 int				enemy_move_down(t_core *so_long);
 int				enemy_move_right(t_core *so_long);
+void			enemy_dies(char c, void *mlx, void *mlx_win, t_core *so_long);
 int				check_rout(t_core *so_long);
 
 void			note_attack(int key, t_core *so_long);
 void			draw_attack_effect(t_core *so_long);
+int				did_attack_hit(t_core *so_long);
 void			check_attack_hit(t_core *so_long);
 void			attack_up(t_core *so_long);
 void			attack_left(t_core *so_long);
+void			attack_down(t_core *so_long);
+void			attack_right(t_core *so_long);
 
 void			move_forward(t_core *so_long, int new_x, int new_y);
 void			move_and_collect(t_core *so_long, int new_x, int new_y);

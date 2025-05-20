@@ -29,19 +29,6 @@ void	print_error(int error_type)
 	exit(ERROR);
 }
 
-// void	check_map(char *map_name)
-// {
-// 	char	**map;
-
-// 	map = convert_map(map_name);
-// 	if (valid_walls(map))
-// 		print_error(INVALID_MAP);
-// 	else if (valid_collectables(map))
-// 		print_error(INVALID_MAP);
-// 	else if (valid_start_goal(map))
-// 		print_error(INVALID_MAP);
-// }
-
 t_map	handle_map(char *map_name)
 {
 	char	**map;
@@ -53,7 +40,7 @@ t_map	handle_map(char *map_name)
 	map = convert_map(map_name, height);
 	width = ft_strlen(map[0]);
 	map_info = init_map(map, width, height);
-	// validate_map(map_info, map_name);
+	validate_map(map_info, map_name);
 	return (map_info);
 }
 

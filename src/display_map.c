@@ -15,7 +15,7 @@
 
 void	*display_window(void *mlx)
 {
-	return (mlx_new_window(mlx, 1000, 1000, "so_long"));
+	return (mlx_new_window(mlx, 1920, 1080, "so_long"));
 }
 
 void	display_map(t_map map_info, void *mlx, void *mlx_win, t_core *so_long)
@@ -29,7 +29,7 @@ void	display_map(t_map map_info, void *mlx, void *mlx_win, t_core *so_long)
 		x = 0;
 		while (x < map_info.width)
 		{
-			print_chunk(map_info.map[y][x], (64 * x + 100), (64 * y + 100), mlx,
+			print_chunk(map_info.map[y][x], (64 * x + 128), (64 * y + 128), mlx,
 				mlx_win, so_long);
 			x++;
 		}
@@ -43,8 +43,8 @@ void	display_chunk(char c, void *mlx, void *mlx_win, t_core *so_long)
 	int	print_x;
 	int	print_y;
 
-	print_y = (64 * so_long->player_y + 100);
-	print_x = (64 * so_long->player_x + 100);
+	print_y = (64 * so_long->player_y + 128);
+	print_x = (64 * so_long->player_x + 128);
 	if (!so_long->toggle)
 		so_long->toggle = 1;
 	else if (so_long->toggle > 0)
@@ -92,8 +92,8 @@ void	display_chunk_two(char c, void *mlx, void *mlx_win, t_core *so_long)
 	int	print_x;
 	int	print_y;
 
-	print_y = (64 * (so_long->enemy.y) + 100);
-	print_x = (64 * so_long->enemy.x + 100);
+	print_y = (64 * (so_long->enemy.y) + 128);
+	print_x = (64 * so_long->enemy.x + 128);
 	if (!so_long->toggle)
 		so_long->toggle = 1;
 	else if (so_long->toggle > 0)
@@ -112,8 +112,8 @@ void	display_chunk_three(char c, void *mlx, void *mlx_win, t_core *so_long)
 	int	print_x;
 	int	print_y;
 
-	print_y = (64 * (so_long->attack_y) + 100);
-	print_x = (64 * so_long->attack_x + 100);
+	print_y = (64 * (so_long->attack_y) + 128);
+	print_x = (64 * so_long->attack_x + 128);
 	print_chunk_two(c, print_x, print_y, mlx, mlx_win, so_long);
 	mlx_do_sync(mlx);
 }

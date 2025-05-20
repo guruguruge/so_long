@@ -149,6 +149,11 @@ void			print_error(int error_type);
 // void			validate_size(map_info);
 // void			validate_filename(char *map_name);
 
+void			validate_walls(t_map map_info);
+void			validate_collectible(t_map map_info);
+void			validate_player(t_map map_info);
+void			validate_enemy(t_map map_info);
+
 t_map			handle_map(char *map_name);
 int				preview_map(char *map_name);
 char			**convert_map(char *map_name, int height);
@@ -168,6 +173,8 @@ void			mlx(t_map map_info);
 void			*display_window(void *mlx);
 void			display_map(t_map map, void *mlx, void *mlx_win,
 					t_core *so_long);
+void			display_chunk(char c, void *mlx, void *mlx_win,
+					t_core *so_long);
 void			display_chunk_two(char c, void *mlx, void *mlx_win,
 					t_core *so_long);
 void			display_chunk_three(char c, void *mlx, void *mlx_win,
@@ -176,8 +183,6 @@ void			print_chunk(char c, int x, int y, void *mlx, void *mlx_w,
 					t_core *so_lg);
 void			print_chunk_two(char c, int x, int y, void *mlx, void *mlx_w,
 					t_core *so_lg);
-void			display_chunk(char c, void *mlx, void *mlx_win,
-					t_core *so_long);
 void			print_move_count(t_core *so_long);
 void			get_images_one(void *mlx, t_core *so_long);
 void			get_images_two(void *mlx, t_core *so_long);

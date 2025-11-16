@@ -1,151 +1,96 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_map.c                                     :+:      :+:    :+:   */
+/*   pregame_validation_two.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sguruge <sguruge@student.42tokyo.jp>       #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-14 14:32:12 by sguruge           #+#    #+#             */
-/*   Updated: 2025-05-14 14:32:12 by sguruge          ###   ########.fr       */
+/*   Created: 2025-05-22 22:36:26 by sguruge           #+#    #+#             */
+/*   Updated: 2025-05-22 22:36:26 by sguruge          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 #include "../includes/so_long.h"
 
-int	find_element(t_map map_info, char c)
+int	in_targets(char c, char *targets)
 {
-	int	x;
-	int	y;
-	int	found;
+	size_t	i;
+
+	i = 0;
+	while (targets[i])
+	{
+		if (c == targets[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	fill(char **tab, t_point size, t_point cur, char *targets)
+{
+	if (cur.y < 0 || cur.y >= size.y || cur.x < 0 || cur.x >= size.x
+		|| !in_targets(tab[cur.y][cur.x], targets))
+		return ;
+	tab[cur.y][cur.x] = 'F';
+	fill(tab, size, (t_point){cur.x - 1, cur.y}, targets);
+	fill(tab, size, (t_point){cur.x + 1, cur.y}, targets);
+	fill(tab, size, (t_point){cur.x, cur.y - 1}, targets);
+	fill(tab, size, (t_point){cur.x, cur.y + 1}, targets);
+}
+
+void	get_init_point(t_point *init, t_point size, t_map map_info,
+		char *target)
+{
+	size_t	x;
+	size_t	y;
+	int		found;
 
 	y = 0;
 	found = 0;
-	while (y < map_info.height)
+	while (y < size.y)
 	{
 		x = 0;
-		while (x < map_info.width)
+		while (x < size.x)
 		{
-			if (map_info.map[y][x] == c)
+			if (in_targets(map_info.map[y][x], target))
 			{
-				found++;
+				init->x = x;
+				init->y = y;
+				found = 1;
 				break ;
 			}
 			x++;
 		}
+		if (found)
+			break ;
 		y++;
 	}
-	return (found);
 }
 
-void	validate_componets(t_map map_info)
+char	**cpy_map(char **original, size_t height)
 {
-	if (find_element(map_info, PLAYER) != 1)
-		print_error(INVALID_MAP);
-	if (find_element(map_info, DOOR) != 1)
-		print_error(INVALID_MAP);
-	if (find_element(map_info, ENEMY) != 1)
-		print_error(INVALID_MAP);
-	if (find_element(map_info, COLLECT) > 0)
-		print_error(INVALID_MAP);
-	if (find_element(map_info, WALL) > 0)
-		print_error(INVALID_MAP);
-	if (find_element(map_info, FLOOR) > 0)
-		print_error(INVALID_MAP);
-}
-
-void	validate_shape(t_map map_info)
-{
-	int	i;
-
-	i = 0;
-	while (i < map_info.height)
-	{
-		if (ft_strlen(map_info.map[i]) != map_info.width)
-			print_error(INVALID_MAP);
-		i++;
-	}
-}
-
-void	validate_walls(t_map map_info)
-{
-	int	i;
-
-	i = 0;
-	while (i < map_info.width)
-	{
-		if (map_info.map[0][i] != '1')
-			print_error(INVALID_MAP);
-		if (map_info.map[0][map_info.height] != '1')
-			print_error(INVALID_MAP);
-		i++;
-	}
-	i = 0;
-	while (i < map_info.height)
-	{
-		if (map_info.map[i][0] != '1')
-			print_error(INVALID_MAP);
-		if (map_info.map[i][map_info.width] != '1')
-			print_error(INVALID_MAP);
-		i++;
-	}
-}
-
-typedef struct s_point
-{
-	int x; // x : Width  | x-axis
-	int y; // y : Height | y-axis
-}		t_point;
-
-void	fill(char **tab, t_point size, t_point cur, char to_fill)
-{
-	if (cur.y < 0 || cur.y >= size.y || cur.x < 0 || cur.x >= size.x
-		|| tab[cur.y][cur.x] != to_fill)
-		return ;
-	tab[cur.y][cur.x] = 'F';
-	fill(tab, size, (t_point){cur.x - 1, cur.y}, to_fill);
-	fill(tab, size, (t_point){cur.x + 1, cur.y}, to_fill);
-	fill(tab, size, (t_point){cur.x, cur.y - 1}, to_fill);
-	fill(tab, size, (t_point){cur.x, cur.y + 1}, to_fill);
-}
-
-void	flood_fill(char **tab, t_point size, t_point begin)
-{
-	fill(tab, size, begin, tab[begin.y][begin.x]);
-}
-
-void	validate_collectible(t_map map_info)
-{
-}
-
-void	validate_playability(t_map map_info)
-{
-	valdate_walls(map_info);
-	validate_collectible(map_info);
-	validate_player(map_info);
-	validate_enemy(map_info);
-}
-
-void	validate_size(t_map map_info)
-{
-	if (map_info.height > 12 || map_info.width > 26)
-		print_error(INVALID_MAP);
-}
-
-void	validate_filename(char *map_name)
-{
+	char	**copy;
 	size_t	i;
 
-	i = ft_strlen(map_name);
-	if (ft_strncmp((*map_name + i - 4), ".ber", 4))
-		print_error(INVALID_MAP);
-}
-
-void	validate_map(t_map map_info, char *map_name)
-{
-	validate_filename(map_name);
-	validate_componets(map_info);
-	validate_shape(map_info);
-	validate_playability(map_info);
-	validate_size(map_info);
+	if (!original)
+		return (NULL);
+	copy = (char **)malloc(sizeof(char *) * (height + 1));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		copy[i] = ft_strdup(original[i]);
+		if (!copy[i])
+		{
+			while (--i >= 0)
+				free(copy[i]);
+			free(copy);
+			return (NULL);
+		}
+		i++;
+	}
+	copy[height] = NULL;
+	return (copy);
 }
